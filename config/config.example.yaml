@@ -1,0 +1,16 @@
+policy_path: config/policy.yaml
+
+adapters:
+  databricks_prod:
+    type: databricks
+    host: https://my-workspace.cloud.databricks.com
+    token_env: DATABRICKS_PROD_TOKEN
+    warehouse_http_path: /sql/1.0/warehouses/abcdef1234567890
+
+  aws_prod:
+    type: aws
+    region: us-east-1
+    profile: openlakehouse-readonly
+    catalog_name: AwsDataCatalog
+    athena_output_location: s3://my-org-athena-results/openlakehouse/
+    athena_workgroup: openlakehouse

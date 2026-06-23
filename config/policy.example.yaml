@@ -1,0 +1,35 @@
+identities:
+  claude-desktop-analyst: analyst
+  claude-code-admin: admin
+
+# Unknown identities are denied entirely (fail closed) when default_role is null.
+default_role: null
+
+roles:
+  admin:
+    can_execute_queries: true
+    rules:
+      - effect: allow
+        adapter: "*"
+        catalog: "*"
+        schema: "*"
+        table: "*"
+
+  analyst:
+    can_execute_queries: true
+    rules:
+      - effect: allow
+        adapter: databricks_prod
+        catalog: sales
+        schema: "*"
+        table: "*"
+      - effect: deny
+        adapter: databricks_prod
+        catalog: sales
+        schema: pii
+        table: "*"
+      - effect: allow
+        adapter: aws_prod
+        catalog: AwsDataCatalog
+        schema: analytics
+        table: "*"
