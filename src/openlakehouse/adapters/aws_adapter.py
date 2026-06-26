@@ -19,15 +19,22 @@ from openlakehouse.core.sql_guard import assert_read_only
 
 _GLUE_TYPE_MAP = {
     "string": ColumnType.STRING,
+    "varchar": ColumnType.STRING,
+    "char": ColumnType.STRING,
     "int": ColumnType.INTEGER,
+    "integer": ColumnType.INTEGER,
+    "tinyint": ColumnType.INTEGER,
+    "smallint": ColumnType.INTEGER,
     "bigint": ColumnType.BIGINT,
     "float": ColumnType.FLOAT,
+    "real": ColumnType.FLOAT,
     "double": ColumnType.DOUBLE,
     "boolean": ColumnType.BOOLEAN,
     "date": ColumnType.DATE,
     "timestamp": ColumnType.TIMESTAMP,
     "decimal": ColumnType.DECIMAL,
     "binary": ColumnType.BINARY,
+    "varbinary": ColumnType.BINARY,
 }
 
 
