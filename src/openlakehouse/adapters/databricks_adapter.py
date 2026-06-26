@@ -129,7 +129,12 @@ class DatabricksAdapter(LakehouseAdapter):
                     cursor.execute(sql)
                     desc = cursor.description or []
                     columns = [
-                        ColumnSchema(name=d[0], type=ColumnType.UNKNOWN, raw_type=str(d[1])) for d in desc
+                        ColumnSchema(
+                            name=d[0],
+                            type=_TYPE_MAP.get(str(d[1]).upper(), ColumnType.UNKNOWN),
+                            raw_type=str(d[1]),
+                        )
+                        for d in desc
                     ]
                     rows = cursor.fetchmany(max_rows)
                     extra = cursor.fetchone()  # peek: is there more?
