@@ -1,0 +1,69 @@
+{
+  "title": "OpenLakehouse Evaluation Suite",
+  "experiments": [
+    {
+      "id": 1,
+      "name": "Canonical Metadata Normalization",
+      "status": "completed",
+      "elapsed_ms": 3156.9,
+      "error": null
+    },
+    {
+      "id": 2,
+      "name": "Canonical Query Normalization",
+      "status": "completed",
+      "elapsed_ms": 12627.9,
+      "error": null
+    },
+    {
+      "id": 3,
+      "name": "Unified Governance Enforcement",
+      "status": "completed",
+      "elapsed_ms": 362.3,
+      "error": null
+    },
+    {
+      "id": 4,
+      "name": "Native MCP vs OpenLakehouse Agent Coupling",
+      "status": "completed",
+      "elapsed_ms": 2.9,
+      "error": null
+    },
+    {
+      "id": 5,
+      "name": "Platform Extension Effort / Zero Agent Modification",
+      "status": "completed",
+      "elapsed_ms": 30.5,
+      "error": null
+    }
+  ],
+  "pytest": {
+    "status": "passed",
+    "summary": "89 passed, 4 warnings in 3.07s",
+    "returncode": 0
+  },
+  "output_files": [
+    "output/evaluations/experiment_1_metadata_normalization.csv",
+    "output/evaluations/experiment_1_metadata_normalization.json",
+    "output/evaluations/experiment_1_metadata_normalization.md",
+    "output/evaluations/experiment_2_query_normalization.csv",
+    "output/evaluations/experiment_2_query_normalization.json",
+    "output/evaluations/experiment_2_query_normalization.md",
+    "output/evaluations/experiment_3_governance_enforcement.csv",
+    "output/evaluations/experiment_3_governance_enforcement.json",
+    "output/evaluations/experiment_3_governance_enforcement.md",
+    "output/evaluations/experiment_4_agent_coupling.csv",
+    "output/evaluations/experiment_4_agent_coupling.json",
+    "output/evaluations/experiment_4_agent_coupling.md",
+    "output/evaluations/experiment_5_platform_extension.csv",
+    "output/evaluations/experiment_5_platform_extension.json",
+    "output/evaluations/experiment_5_platform_extension.md"
+  ],
+  "limitations": [
+    "Databricks query pagination is not resumable in v1 (next_page_token=None for Databricks)",
+    "assert_read_only is a denylist heuristic, not a full SQL parser",
+    "AWS Lake Formation is 'rely-and-surface' \u2014 OpenLakehouse does not proactively introspect LF grants",
+    "SnowflakeAdapter in Experiment 5 is a stub \u2014 not connected to real Snowflake",
+    "Performance measurements include network latency and warehouse cold-start time"
+  ]
+}

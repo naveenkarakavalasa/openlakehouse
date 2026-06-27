@@ -131,3 +131,38 @@ Python, the AWS adapter is tested against `moto`'s in-memory Glue/Athena, and th
 adapter is tested with `pytest-mock` patching `WorkspaceClient`/`databricks.sql.connect`. The
 tool-layer tests (`tests/unit/test_tools.py`) specifically assert that a denied policy check
 prevents the underlying adapter from ever being called — the core "governed access" invariant.
+
+## Paper Evaluation Suite
+
+Five experiments covering the Canonical Lakehouse Model (CLM) research contribution:
+
+| Experiment | Description | Needs Live Credentials |
+|---|---|---|
+| 1 — Metadata Normalization | Verify Databricks + AWS return identical canonical metadata shapes | Yes |
+| 2 — Query Normalization | Verify both platforms return identical CanonicalQueryResult | Yes |
+| 3 — Governance Enforcement | Validate default-deny, reason codes, policy-before-adapter invariant | No |
+| 4 — Agent Coupling | Static comparison: native MCP vs OpenLakehouse CLM | No |
+| 5 — Platform Extension | Zero Agent Modification Property with SnowflakeAdapter stub | No |
+
+**Run all experiments:**
+
+```bash
+# With live Databricks + AWS credentials
+set -a && source .env && set +a
+python -m evaluation.run_all_experiments
+
+# Without live credentials (experiments 3–5 only)
+python -m evaluation.run_all_experiments --skip-live
+```
+
+**Run individual experiments:**
+
+```bash
+python -m evaluation.experiment_1_metadata_normalization
+python -m evaluation.experiment_2_query_normalization
+python -m evaluation.experiment_3_governance_enforcement
+python -m evaluation.experiment_4_agent_coupling
+python -m evaluation.experiment_5_platform_extension
+```
+
+Output files are written to `output/evaluations/` (JSON, CSV, Markdown per experiment plus `summary.md`).

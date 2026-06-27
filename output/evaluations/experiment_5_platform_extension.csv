@@ -1,0 +1,3 @@
+approach,new_files_required,estimated_agent_loc_added,estimated_total_loc_added,agent_code_changes_required,mcp_tool_changes_required,canonical_model_changes_required,zero_agent_modification,property_holds
+A — Native Agent Integration,0,300,300,"High — new tool calls, new response parsers, new auth flow per platform",N/A — agent owns the tools,N/A — no canonical model,False,False
+B — OpenLakehouse CLM Adapter,4,0,179,None — agent uses same 5 MCP tools with same canonical response,None — server/tools.py unchanged,None — core/canonical/* unchanged,True,True

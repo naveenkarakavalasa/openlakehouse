@@ -1,0 +1,5 @@
+approach,mcp_endpoints_required,metadata_models_required,query_models_required,governance_models_required,agent_response_parsers_required,platform_specific_branches_required,supports_databricks,supports_aws,supports_both_without_agent_change,response_contract,vendor_lock_in
+A — Databricks Native,1,1,1,1,1,0,True,False,False,Databricks-specific (Unity Catalog REST + SQL Warehouse schema),High — agent logic tightly coupled to Databricks SDK/MCP schema
+B — AWS Native,1,1,1,1,1,0,False,True,False,AWS-specific (Glue API + Athena QueryResult schema),High — agent logic tightly coupled to AWS SDK/Boto3 schema
+C — Native Multi-MCP,2,2,2,2,2,2,True,True,False,Mixed — agent must branch on platform at every step,High — multiplied per platform; grows linearly with platform count
+D — OpenLakehouse CLM,1,1,1,1,1,0,True,True,True,Canonical Lakehouse Model (CLM) — platform-agnostic,None — agent decoupled from all platform-specific schemas

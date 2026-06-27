@@ -1,0 +1,107 @@
+{
+  "experiment": "Native MCP vs OpenLakehouse Agent Coupling",
+  "status": "completed",
+  "approaches": [
+    {
+      "approach": "A \u2014 Databricks Native",
+      "description": "Agent connects directly to Databricks MCP server or SQL connector",
+      "mcp_endpoints_required": 1,
+      "metadata_models_required": 1,
+      "query_models_required": 1,
+      "governance_models_required": 1,
+      "agent_response_parsers_required": 1,
+      "platform_specific_branches_required": 0,
+      "supports_databricks": true,
+      "supports_aws": false,
+      "supports_both_without_agent_change": false,
+      "response_contract": "Databricks-specific (Unity Catalog REST + SQL Warehouse schema)",
+      "agent_code_to_add_platform": "Full agent rewrite or parallel integration",
+      "vendor_lock_in": "High \u2014 agent logic tightly coupled to Databricks SDK/MCP schema"
+    },
+    {
+      "approach": "B \u2014 AWS Native",
+      "description": "Agent connects directly to AWS Glue/Athena APIs or AWS MCP server",
+      "mcp_endpoints_required": 1,
+      "metadata_models_required": 1,
+      "query_models_required": 1,
+      "governance_models_required": 1,
+      "agent_response_parsers_required": 1,
+      "platform_specific_branches_required": 0,
+      "supports_databricks": false,
+      "supports_aws": true,
+      "supports_both_without_agent_change": false,
+      "response_contract": "AWS-specific (Glue API + Athena QueryResult schema)",
+      "agent_code_to_add_platform": "Full agent rewrite or parallel integration",
+      "vendor_lock_in": "High \u2014 agent logic tightly coupled to AWS SDK/Boto3 schema"
+    },
+    {
+      "approach": "C \u2014 Native Multi-MCP",
+      "description": "Agent connects to both Databricks and AWS MCP endpoints separately",
+      "mcp_endpoints_required": 2,
+      "metadata_models_required": 2,
+      "query_models_required": 2,
+      "governance_models_required": 2,
+      "agent_response_parsers_required": 2,
+      "platform_specific_branches_required": 2,
+      "supports_databricks": true,
+      "supports_aws": true,
+      "supports_both_without_agent_change": false,
+      "response_contract": "Mixed \u2014 agent must branch on platform at every step",
+      "agent_code_to_add_platform": "New MCP config + new response parser + new branches per operation",
+      "vendor_lock_in": "High \u2014 multiplied per platform; grows linearly with platform count"
+    },
+    {
+      "approach": "D \u2014 OpenLakehouse CLM",
+      "description": "Agent connects to OpenLakehouse MCP server; receives Canonical Lakehouse Model responses",
+      "mcp_endpoints_required": 1,
+      "metadata_models_required": 1,
+      "query_models_required": 1,
+      "governance_models_required": 1,
+      "agent_response_parsers_required": 1,
+      "platform_specific_branches_required": 0,
+      "supports_databricks": true,
+      "supports_aws": true,
+      "supports_both_without_agent_change": true,
+      "response_contract": "Canonical Lakehouse Model (CLM) \u2014 platform-agnostic",
+      "agent_code_to_add_platform": "Zero \u2014 new adapter registered server-side, agent unchanged",
+      "vendor_lock_in": "None \u2014 agent decoupled from all platform-specific schemas"
+    }
+  ],
+  "tool_comparison": [
+    {
+      "tool": "list_catalogs",
+      "native_databricks": "catalog.list() \u2192 DatabricksCatalogInfo[]",
+      "native_aws": "glue.get_databases() \u2192 DatabaseList[]",
+      "openlakehouse_clm": "list_catalogs() \u2192 CanonicalCatalog[] (same shape, both platforms)"
+    },
+    {
+      "tool": "list_tables",
+      "native_databricks": "tables.list() \u2192 TableInfo[]",
+      "native_aws": "glue.get_tables() \u2192 TableList[]",
+      "openlakehouse_clm": "list_tables() \u2192 CanonicalTable[] (same shape, both platforms)"
+    },
+    {
+      "tool": "run_query",
+      "native_databricks": "cursor.execute() \u2192 DB-API Row[]",
+      "native_aws": "athena.start_query_execution() \u2192 async poll \u2192 Rows[]",
+      "openlakehouse_clm": "run_query() \u2192 CanonicalQueryResult (same shape, both platforms)"
+    },
+    {
+      "tool": "governance",
+      "native_databricks": "UC privileges (GRANT SQL), per-catalog",
+      "native_aws": "IAM + Lake Formation, per-database",
+      "openlakehouse_clm": "CanonicalPolicy YAML \u2014 adapter/catalog/schema/table rules, unified"
+    }
+  ],
+  "coupling_reduction_clm_vs_native_multi": {
+    "mcp_endpoints": 1,
+    "metadata_models": 1,
+    "response_parsers": 1,
+    "platform_branches": 2
+  },
+  "zero_agent_modification_property": {
+    "holds": true,
+    "description": "Adding a new platform adapter to OpenLakehouse requires zero changes to agent code, MCP tool names, or canonical response parsers",
+    "verified_by": "experiment_5_platform_extension"
+  }
+}

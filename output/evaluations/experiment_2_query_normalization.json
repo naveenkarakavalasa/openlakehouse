@@ -1,0 +1,107 @@
+{
+  "experiment": "Canonical Query Normalization",
+  "status": "completed",
+  "skipped_adapters": [],
+  "total": 2,
+  "passed": 2,
+  "canonical_examples": {
+    "databricks": {
+      "columns": [
+        {
+          "name": "n",
+          "data_type": "integer",
+          "raw_type": "int",
+          "nullable": true
+        }
+      ],
+      "rows": [
+        [
+          1
+        ]
+      ],
+      "pagination": {
+        "truncated": false,
+        "next_page_token": null,
+        "row_count": 1
+      },
+      "execution": {
+        "query_id": null,
+        "adapter": "databricks_prod",
+        "platform": "databricks",
+        "execution_time_ms": 11003.369577927515,
+        "native_metadata": {}
+      }
+    },
+    "aws": {
+      "columns": [
+        {
+          "name": "n",
+          "data_type": "integer",
+          "raw_type": "integer",
+          "nullable": true
+        }
+      ],
+      "rows": [
+        [
+          "1"
+        ]
+      ],
+      "pagination": {
+        "truncated": false,
+        "next_page_token": null,
+        "row_count": 1
+      },
+      "execution": {
+        "query_id": "9b03314e-1e7f-4131-9382-0f63141be933",
+        "adapter": "aws_prod",
+        "platform": "aws",
+        "execution_time_ms": 1471.3354860432446,
+        "native_metadata": {}
+      }
+    }
+  },
+  "rows": [
+    {
+      "platform": "databricks",
+      "adapter": "databricks_prod",
+      "sql": "SELECT 1 AS n",
+      "canonical_shape_valid": true,
+      "columns_present": true,
+      "rows_present": true,
+      "pagination_present": true,
+      "execution_present": true,
+      "columns_fields_ok": true,
+      "pagination_fields_ok": true,
+      "execution_fields_ok": true,
+      "column_count": 1,
+      "row_count": 1,
+      "execution_time_ms": 11003.4,
+      "query_id": null,
+      "truncated": false,
+      "next_page_token": null,
+      "success": true,
+      "error": null
+    },
+    {
+      "platform": "aws",
+      "adapter": "aws_prod",
+      "sql": "SELECT 1 AS n",
+      "canonical_shape_valid": true,
+      "columns_present": true,
+      "rows_present": true,
+      "pagination_present": true,
+      "execution_present": true,
+      "columns_fields_ok": true,
+      "pagination_fields_ok": true,
+      "execution_fields_ok": true,
+      "column_count": 1,
+      "row_count": 1,
+      "execution_time_ms": 1471.3,
+      "query_id": "9b03314e-1e7f-4131-9382-0f63141be933",
+      "truncated": false,
+      "next_page_token": null,
+      "success": true,
+      "error": null
+    }
+  ]
+}
