@@ -72,6 +72,7 @@ class AWSAdapter(LakehouseAdapter):
         poll_timeout_seconds: float = 120.0,
     ) -> None:
         self.name = name
+        self.platform = "aws"
         self._catalog_name = catalog_name
         self._output_location = athena_output_location
         self._workgroup = athena_workgroup

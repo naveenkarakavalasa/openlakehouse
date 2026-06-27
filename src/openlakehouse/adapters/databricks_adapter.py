@@ -52,6 +52,7 @@ class DatabricksAdapter(LakehouseAdapter):
         warehouse_http_path: str,
     ) -> None:
         self.name = name
+        self.platform = "databricks"
         self._host = host
         self._warehouse_http_path = warehouse_http_path
         self._token = token

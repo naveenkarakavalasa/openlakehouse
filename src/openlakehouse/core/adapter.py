@@ -18,6 +18,7 @@ class LakehouseAdapter(ABC):
     """
 
     name: str
+    platform: str  # short identifier: "databricks", "aws", etc.
 
     @abstractmethod
     def list_catalogs(self) -> list[CatalogRef]:
