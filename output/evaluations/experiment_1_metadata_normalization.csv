@@ -1,9 +1,0 @@
-platform,adapter,operation,native_source,canonical_model_returned,canonical_conformance,result_count,observed_latency_ms,success,error
-databricks,databricks_prod,list_catalogs,Databricks Unity Catalog (databricks-sdk WorkspaceClient),CanonicalCatalog,True,3,290.8,True,
-databricks,databricks_prod,list_schemas,Databricks Unity Catalog (databricks-sdk WorkspaceClient),CanonicalSchema,True,10,304.4,True,
-databricks,databricks_prod,list_tables,Databricks Unity Catalog (databricks-sdk WorkspaceClient),CanonicalTable,True,1,111.3,True,
-databricks,databricks_prod,describe_table,Databricks Unity Catalog (databricks-sdk WorkspaceClient),CanonicalTableSchema,True,6,122.1,True,
-aws,aws_prod,list_catalogs,AWS Glue Data Catalog (boto3 Glue client),CanonicalCatalog,True,1,0.0,True,
-aws,aws_prod,list_schemas,AWS Glue Data Catalog (boto3 Glue client),CanonicalSchema,True,1,149.8,True,
-aws,aws_prod,list_tables,AWS Glue Data Catalog (boto3 Glue client),CanonicalTable,True,1,58.1,True,
-aws,aws_prod,describe_table,AWS Glue Data Catalog (boto3 Glue client),CanonicalTableSchema,True,3,59.3,True,

@@ -8,3 +8,6 @@ config/policy.yaml
 config/config.example copy.yaml
 .env
 data/
+paper/*.docx
+paper/paper(*).bib
+paper/paper(*).md

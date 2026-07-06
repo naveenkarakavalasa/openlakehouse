@@ -1,3 +1,0 @@
-platform,adapter,sql,canonical_shape_valid,columns_present,rows_present,pagination_present,execution_present,columns_fields_ok,pagination_fields_ok,execution_fields_ok,column_count,row_count,observed_execution_time_ms,query_id,truncated,next_page_token,query_conformance,error
-databricks,databricks_prod,SELECT 1 AS n,True,True,True,True,True,True,True,True,1,1,1054.5,,False,,True,
-aws,aws_prod,SELECT 1 AS n,True,True,True,True,True,True,True,True,1,1,1403.9,e11db9a0-e6a9-48c5-acb1-feac8b3d409d,False,,True,
