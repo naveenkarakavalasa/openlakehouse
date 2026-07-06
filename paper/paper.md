@@ -75,34 +75,6 @@ which AI agents must access and correlate data distributed across institutional
 lakehouse deployments — a pattern common in computational science, bioinformatics,
 and data-intensive social science research.
 
-# State of the Field
-
-Several open-source projects address parts of the multi-platform data access problem
-for AI agents but differ in scope or design.
-
-**Vendor-specific MCP servers.** Databricks [@databricksmcp2025] and AWS
-[@awsmcp2025] have each released official MCP servers that expose their respective
-platforms to AI agents. These are single-platform solutions: an agent querying both
-requires two separate MCP server configurations, receives platform-native response
-structures from each, and must implement per-platform parsing and governance logic
-in agent code. OpenLakehouse replaces both with one server that returns identical
-canonical types regardless of which platform served the data.
-
-**General-purpose agent frameworks.** LangChain [@langchain2023] and LlamaIndex
-[@llamaindex2023] provide data loaders and SQL integrations. These are not MCP-native,
-are oriented toward document retrieval rather than structured lakehouse access, and do
-not provide platform-independent canonical response schemas or an integrated governance
-layer that operates at the tool-call level.
-
-**Federated SQL engines.** Trino [@trinodb2019] provides unified query access across
-data stores but requires dedicated server infrastructure and is not designed as an AI
-agent tool interface — it has no canonical metadata model, no MCP tooling, and no
-agent-facing governance layer.
-
-OpenLakehouse occupies a distinct position: it is the only open-source software that
-combines MCP-native agent tooling, canonical typed response models, and default-deny
-governance across multiple lakehouse platforms in a single deployable server.
-
 # Features
 
 - **Canonical Lakehouse Model.** Metadata, query results, and authorization decisions
