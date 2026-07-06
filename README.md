@@ -31,7 +31,7 @@ modifying the MCP server, canonical models, or agent code.
 The CLM defines three layers of platform-agnostic abstractions:
 
 | Layer | Canonical Types | What it normalises |
-|---|---|---|
+| --- | --- | --- |
 | **Metadata** | `CanonicalCatalog`, `CanonicalSchema`, `CanonicalTable`, `CanonicalTableSchema` | Namespace hierarchies, column types, table formats |
 | **Query** | `CanonicalQueryResult`, `CanonicalQueryColumn`, `CanonicalPagination`, `CanonicalExecutionMetadata` | Synchronous vs. async execution, result pagination, type vocabularies |
 | **Governance** | `CanonicalAuthorizationDecision`, `CanonicalReasonCode` | Platform-independent access control with structured reason codes |
@@ -65,7 +65,7 @@ every tool calls the policy engine *before* touching an adapter, never after.
 ## MCP Tools
 
 | Tool | Input | Output |
-|---|---|---|
+| --- | --- | --- |
 | `list_catalogs` | `{}` | Canonical catalogs visible to the current identity, across all adapters |
 | `list_schemas` | `{adapter, catalog}` | Canonical schemas within a catalog |
 | `list_tables` | `{adapter, catalog, schema}` | Canonical tables/views within a schema |
@@ -197,7 +197,7 @@ Five experiments in `evaluation/` validate the CLM's architectural properties.
 Experiments 3–5 run without live credentials:
 
 | Experiment | What it validates | Needs credentials |
-|---|---|---|
+| --- | --- | --- |
 | 1 — Metadata Normalization | Databricks + AWS produce identical canonical metadata shapes | Yes |
 | 2 — Query Normalization | Both platforms return identical `CanonicalQueryResult` envelope | Yes |
 | 3 — Governance Enforcement | Default-deny, reason codes, policy-before-adapter invariant | No |
@@ -227,8 +227,9 @@ If you use OpenLakehouse in your research, please cite:
   author  = {Karakavalasa, Naveen and Kotagiri, Santosh},
   title   = {OpenLakehouse: A Canonical Interoperability Layer for AI Agent Access to Multi-Platform Lakehouse Data},
   year    = {2026},
-  url     = {https://github.com/naveenkarakavalasa/openlakehouse},
-  version = {0.1.0}
+  version = {0.1.0},
+  doi     = {10.5281/zenodo.21226569},
+  url     = {https://doi.org/10.5281/zenodo.21226569}
 }
 ```
 
