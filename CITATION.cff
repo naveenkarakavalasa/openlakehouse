@@ -4,7 +4,9 @@ type: software
 version: 0.1.0
 date-released: "2026-07-06"
 license: Apache-2.0
+doi: 10.5281/zenodo.21226569
 repository-code: "https://github.com/naveenkarakavalasa/openlakehouse"
+url: "https://doi.org/10.5281/zenodo.21226569"
 abstract: >
   OpenLakehouse is an open-source Python reference implementation of the
   Canonical Lakehouse Model (CLM), an architectural pattern for giving AI
