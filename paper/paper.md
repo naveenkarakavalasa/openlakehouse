@@ -13,6 +13,7 @@ authors:
     orcid: 0009-0000-4697-9101
     affiliation: 1
   - name: Santosh Kotagiri
+    orcid: 0009-0000-0205-1053
     affiliation: 2
 affiliations:
   - name: Tokio Marine North America Services
