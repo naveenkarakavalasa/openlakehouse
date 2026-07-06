@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+title: "OpenLakehouse: A Canonical Interoperability Layer for AI Agent Access to Multi-Platform Lakehouse Data"
+type: software
+version: 0.1.0
+date-released: "2026-07-06"
+license: Apache-2.0
+repository-code: "https://github.com/naveenkarakavalasa/openlakehouse"
+abstract: >
+  OpenLakehouse is an open-source Python MCP server that gives AI agents
+  unified, governed read access to data across heterogeneous lakehouse
+  platforms. It implements the Canonical Lakehouse Model (CLM), a
+  three-layer abstraction (Metadata, Query, Governance) that normalises
+  platform-native responses from Databricks and AWS into consistent
+  canonical types before they reach the agent. A built-in policy engine
+  enforces default-deny role-based access control independently of the
+  underlying platform.
+authors:
+  - family-names: Karakavalasa
+    given-names: Naveen
+    orcid: "https://orcid.org/0009-0000-4697-9101"
+    affiliation: "Tokio Marine North America Services"
+  - family-names: Kotagiri
+    given-names: Santosh
+    affiliation: "Southwest Airlines"
+keywords:
+  - mcp
+  - lakehouse
+  - databricks
+  - aws
+  - ai-agents
+  - data-virtualization
+  - model-context-protocol
+  - access-control
