@@ -87,7 +87,7 @@ class CanonicalSchema(BaseModel):
     adapter: str
     platform: str
     catalog: str
-    schema: str
+    schema_name: str = Field(alias="schema")
     native_schema: str
     comment: str | None = None
     platform_metadata: dict[str, Any] = Field(default_factory=dict)
@@ -101,7 +101,7 @@ class CanonicalTable(BaseModel):
     adapter: str
     platform: str
     catalog: str
-    schema: str
+    schema_name: str = Field(alias="schema")
     table: str
     table_type: CanonicalTableType = CanonicalTableType.TABLE
     comment: str | None = None

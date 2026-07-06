@@ -35,11 +35,11 @@ class CanonicalResourceScope(BaseModel):
 
     adapter: str = "*"
     catalog: str = "*"
-    schema: str = "*"
+    schema_name: str = Field(default="*", alias="schema")
     table: str = "*"
 
     def __str__(self) -> str:
-        return f"{self.adapter}/{self.catalog}/{self.schema}/{self.table}"
+        return f"{self.adapter}/{self.catalog}/{self.schema_name}/{self.table}"
 
 
 class CanonicalPolicyRule(BaseModel):

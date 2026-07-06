@@ -40,7 +40,7 @@ def test_catalog_to_canonical_aws():
 def test_schema_to_canonical():
     ref = SchemaRef(adapter="databricks_prod", catalog="sales", schema="orders")
     result = schema_to_canonical(ref, "databricks")
-    assert result.schema == "orders"
+    assert result.schema_name == "orders"
     assert result.native_schema == "orders"
     assert result.platform == "databricks"
     assert result.catalog == "sales"
@@ -114,7 +114,7 @@ def test_table_schema_to_canonical():
     result = table_schema_to_canonical(ts, "aws")
     assert result.table.platform == "aws"
     assert result.table.catalog == "AwsDataCatalog"
-    assert result.table.schema == "analytics"
+    assert result.table.schema_name == "analytics"
     assert len(result.columns) == 1
     assert result.columns[0].data_type == CanonicalDataType.DOUBLE
     assert result.partition_columns == ["pickup_date"]

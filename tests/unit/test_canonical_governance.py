@@ -115,7 +115,7 @@ def test_authorize_with_decision_resource_scope_populated():
     )
     assert decision.resource.adapter == "db"
     assert decision.resource.catalog == "sales"
-    assert decision.resource.schema == "orders"
+    assert decision.resource.schema_name == "orders"
     assert decision.resource.table == "transactions"
 
 

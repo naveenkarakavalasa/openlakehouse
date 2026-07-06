@@ -37,7 +37,7 @@ def test_canonical_schema_fields():
         schema="analytics",
         native_schema="analytics",
     )
-    assert schema.schema == "analytics"
+    assert schema.schema_name == "analytics"
     assert schema.native_schema == "analytics"
     assert schema.platform == "aws"
 

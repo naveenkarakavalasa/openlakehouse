@@ -45,7 +45,7 @@ def register_tools(mcp: FastMCP, ctx: ServerContext) -> None:
             all_catalogs.extend(adapter.list_catalogs())
         visible = ctx.policy_engine.filter_catalogs(identity, all_catalogs)
         return [
-            catalog_to_canonical(c, ctx.adapters[c.adapter].platform).model_dump()
+            catalog_to_canonical(c, ctx.adapters[c.adapter].platform).model_dump(by_alias=True)
             for c in visible
         ]
 
@@ -59,7 +59,7 @@ def register_tools(mcp: FastMCP, ctx: ServerContext) -> None:
         adp = ctx.get_adapter(adapter)
         schemas = adp.list_schemas(catalog)
         visible = ctx.policy_engine.filter_schemas(identity, adapter, schemas)
-        return [schema_to_canonical(s, adp.platform).model_dump() for s in visible]
+        return [schema_to_canonical(s, adp.platform).model_dump(by_alias=True) for s in visible]
 
     @mcp.tool()
     @mcp_tool_errors
@@ -71,7 +71,7 @@ def register_tools(mcp: FastMCP, ctx: ServerContext) -> None:
         adp = ctx.get_adapter(adapter)
         tables = adp.list_tables(catalog, schema)
         visible = ctx.policy_engine.filter_tables(identity, adapter, catalog, schema, tables)
-        return [table_summary_to_canonical(t, adp.platform).model_dump() for t in visible]
+        return [table_summary_to_canonical(t, adp.platform).model_dump(by_alias=True) for t in visible]
 
     @mcp.tool()
     @mcp_tool_errors
@@ -84,7 +84,7 @@ def register_tools(mcp: FastMCP, ctx: ServerContext) -> None:
         )
         adp = ctx.get_adapter(adapter)
         result = adp.describe_table(catalog, schema, table)
-        return table_schema_to_canonical(result, adp.platform).model_dump()
+        return table_schema_to_canonical(result, adp.platform).model_dump(by_alias=True)
 
     @mcp.tool()
     @mcp_tool_errors
@@ -113,4 +113,4 @@ def register_tools(mcp: FastMCP, ctx: ServerContext) -> None:
             sql, catalog=catalog, schema=schema, max_rows=max_rows, page_token=page_token
         )
         elapsed_ms = (time.monotonic() - t0) * 1000
-        return query_result_to_canonical(result, adapter, adp.platform, elapsed_ms).model_dump()
+        return query_result_to_canonical(result, adapter, adp.platform, elapsed_ms).model_dump(by_alias=True)

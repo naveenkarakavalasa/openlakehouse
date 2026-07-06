@@ -61,6 +61,6 @@ class CanonicalQueryRequest(BaseModel):
     adapter: str
     sql: str
     catalog: str | None = None
-    schema: str | None = None
+    schema_name: str | None = Field(default=None, alias="schema")
     max_rows: int = 1000
     page_token: str | None = None
