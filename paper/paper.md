@@ -69,8 +69,10 @@ always receive the same canonical response types — `CanonicalCatalog`,
 `CanonicalQueryResult` — regardless of the underlying platform. Adding a new platform
 requires no changes to the agent integration code.
 
-The intended users are data engineers and AI practitioners building agents over
-multi-vendor data estates. The CLM pattern also supports research workflows in
+Existing platform-specific MCP servers expose vendor-native APIs, while OpenLakehouse
+provides a single canonical interface with centralized policy enforcement across
+heterogeneous lakehouse platforms. The intended users are data engineers and AI
+practitioners building agents over multi-vendor data estates. The CLM pattern also supports research workflows in
 which AI agents must access and correlate data distributed across institutional
 lakehouse deployments — a pattern common in computational science, bioinformatics,
 and data-intensive social science research.
