@@ -98,27 +98,87 @@ to the standard boto3 credential chain (profile / env vars / instance role).
 
 ## Running
 
-**Linux / macOS:**
+### Step 1 — Configure
 
 ```bash
-OPENLAKEHOUSE_IDENTITY=claude-desktop-analyst \
-OPENLAKEHOUSE_CONFIG=config/config.yaml \
-DATABRICKS_PROD_TOKEN=dapi... \
-AWS_PROFILE=openlakehouse-readonly \
-openlakehouse
+cp config/config.example.yaml config/config.yaml
+cp config/policy.example.yaml config/policy.yaml
 ```
 
-**Windows (Command Prompt):**
+Edit `config/config.yaml` with your platform details. Edit `policy.yaml` to map your agent identity to a role.
 
+### Step 2 — Set environment variables
+
+**Required for all adapters:**
+
+| Variable | Purpose |
+| --- | --- |
+| `OPENLAKEHOUSE_IDENTITY` | Agent identity — must match an entry in `policy.yaml` |
+| `OPENLAKEHOUSE_CONFIG` | Absolute path to your `config.yaml` |
+
+**Databricks** — set these fields in `config.yaml`:
+
+| Field | Value |
+| --- | --- |
+| `host` | Your Databricks workspace URL, e.g. `https://my-workspace.cloud.databricks.com` |
+| `warehouse_http_path` | HTTP path of your SQL Warehouse, e.g. `/sql/1.0/warehouses/abc123` |
+| `token_env` | Name of the environment variable that will hold your PAT, e.g. `DATABRICKS_PROD_TOKEN` |
+
+**AWS** — set these fields in `config.yaml`:
+
+| Field | Value |
+| --- | --- |
+| `region` | AWS region, e.g. `us-east-1` |
+| `catalog_name` | Glue Data Catalog name, e.g. `AwsDataCatalog` |
+| `athena_output_location` | S3 path for Athena query results, e.g. `s3://my-bucket/athena/` |
+
+AWS credentials are not stored in `config.yaml` — use `AWS_ACCESS_KEY_ID` + `AWS_SECRET_ACCESS_KEY`, a named profile (`AWS_PROFILE`), or an instance/container role.
+
+**Collect the following values then set them using the commands below:**
+
+| Variable | What to collect |
+| --- | --- |
+| `OPENLAKEHOUSE_IDENTITY` | The agent identity name you defined in `policy.yaml` |
+| `OPENLAKEHOUSE_CONFIG` | Full path to your `config.yaml` |
+| `DATABRICKS_PROD_TOKEN` | Databricks personal access token |
+| `AWS_ACCESS_KEY_ID` | AWS access key ID |
+| `AWS_SECRET_ACCESS_KEY` | AWS secret access key |
+
+**Linux / macOS:**
+```bash
+export OPENLAKEHOUSE_IDENTITY=my-agent
+export OPENLAKEHOUSE_CONFIG=/abs/path/to/config/config.yaml
+export DATABRICKS_PROD_TOKEN=dapi...
+export AWS_ACCESS_KEY_ID=...
+export AWS_SECRET_ACCESS_KEY=...
+```
+
+**Windows:**
 ```cmd
-set OPENLAKEHOUSE_IDENTITY=claude-desktop-analyst
+set OPENLAKEHOUSE_IDENTITY=my-agent
 set OPENLAKEHOUSE_CONFIG=C:\path\to\config\config.yaml
 set DATABRICKS_PROD_TOKEN=dapi...
-set AWS_PROFILE=openlakehouse-readonly
-openlakehouse
+set AWS_ACCESS_KEY_ID=...
+set AWS_SECRET_ACCESS_KEY=...
 ```
 
-### Claude Desktop / Claude Code MCP config
+### Step 3 — Verify the server starts
+
+Run the MCP Inspector to browse available tools interactively (requires Node.js):
+
+```bash
+npx @modelcontextprotocol/inspector openlakehouse
+```
+
+Or run the canonical interface demo to verify live data access (Snowflake stub runs without credentials):
+
+```bash
+python experiments/canonical_interface_demo.py
+```
+
+### Step 4 — Connect OpenLakehouse to an agent
+
+OpenLakehouse runs as a stdio MCP server. Any MCP-compatible agent framework accepts an `mcpServers` configuration block to spawn and connect to it:
 
 ```json
 {
@@ -126,21 +186,18 @@ openlakehouse
     "openlakehouse": {
       "command": "/abs/path/to/.venv/bin/openlakehouse",
       "env": {
-        "OPENLAKEHOUSE_IDENTITY": "claude-desktop-analyst",
+        "OPENLAKEHOUSE_IDENTITY": "my-agent",
         "OPENLAKEHOUSE_CONFIG": "/abs/path/to/config/config.yaml",
         "DATABRICKS_PROD_TOKEN": "dapi...",
-        "AWS_PROFILE": "openlakehouse-readonly"
+        "AWS_ACCESS_KEY_ID": "...",
+        "AWS_SECRET_ACCESS_KEY": "..."
       }
     }
   }
 }
 ```
 
-### Smoke test without a full agent client
-
-```bash
-npx @modelcontextprotocol/inspector openlakehouse
-```
+Pass this configuration to your agent framework's MCP client initialisation. Refer to your framework's documentation for where this block is placed (e.g. Claude Desktop `claude_desktop_config.json`, Claude Code `claude mcp add`, or equivalent).
 
 ## Identity and Access Control
 
@@ -160,32 +217,31 @@ explicit `PermissionDeniedError` when the named resource is denied.
 
 `experiments/canonical_interface_demo.py` issues the same query against
 Databricks, AWS Athena, and a Snowflake stub, then compares the
-`CanonicalQueryResult` objects side by side:
+`CanonicalQueryResult` objects side by side, confirming the
+**Zero Agent Modification Property**: adding the Snowflake adapter required
+no changes to MCP tools, canonical models, or the policy engine.
+
+**Snowflake stub — no credentials required:**
 
 ```bash
-# Snowflake stub only (no credentials required):
 python experiments/canonical_interface_demo.py
 ```
 
-With live credentials — **Linux / macOS:**
+**With live Databricks and AWS credentials** (Steps 1–2 above must be complete):
 
+Linux / macOS:
 ```bash
 set -a && source .env && set +a
 python experiments/canonical_interface_demo.py
 ```
 
-With live credentials — **Windows (Command Prompt):**
-
+Windows:
 ```cmd
 set DATABRICKS_PROD_TOKEN=dapi...
 set AWS_ACCESS_KEY_ID=...
 set AWS_SECRET_ACCESS_KEY=...
 python experiments/canonical_interface_demo.py
 ```
-
-The demo confirms the **Zero Agent Modification Property**: adding the
-Snowflake adapter required no changes to MCP tools, canonical models, or the
-policy engine.
 
 ## Known v1 Limitations
 
