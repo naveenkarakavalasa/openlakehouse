@@ -9,6 +9,11 @@ authors = [
     {name = "Santosh Kotagiri"},
 ]
 keywords = ["mcp", "lakehouse", "databricks", "aws", "ai-agents", "data-virtualization"]
+
+[project.urls]
+Homepage = "https://github.com/naveenkarakavalasa/openlakehouse"
+Repository = "https://github.com/naveenkarakavalasa/openlakehouse"
+Issues = "https://github.com/naveenkarakavalasa/openlakehouse/issues"
 classifiers = [
     "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3",
