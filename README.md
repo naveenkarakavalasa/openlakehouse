@@ -96,6 +96,19 @@ Requires Python 3.11+. Secrets are never stored in `config.yaml` — Databricks
 PATs are referenced by env var name (`token_env`), and AWS credentials defer
 to the standard boto3 credential chain (profile / env vars / instance role).
 
+## Paper Validation
+
+[![Build JOSS Paper](https://github.com/naveenkarakavalasa/openlakehouse/actions/workflows/paper.yml/badge.svg)](https://github.com/naveenkarakavalasa/openlakehouse/actions/workflows/paper.yml)
+
+The `paper.yml` workflow validates the JOSS submission paper on every push
+using the official [Open Journals PDF Generator](https://github.com/marketplace/actions/open-journals-pdf-generator)
+action. This confirms the paper compiles correctly with the same toolchain
+JOSS editors use before formal submission.
+
+To download the generated PDF:
+1. Go to **Actions** → **Build JOSS Paper** → select the latest run
+2. Scroll to **Artifacts** → download **openlakehouse-paper**
+
 ## Testing
 
 ```bash
