@@ -69,8 +69,38 @@ always receive the same canonical response types — `CanonicalCatalog`,
 requires no changes to the agent integration code.
 
 The intended users are data engineers and AI practitioners building agents over
-multi-vendor data estates. No existing open-source MCP server provides governed,
-multi-platform lakehouse access with a unified canonical response model.
+multi-vendor data estates. The CLM pattern also supports research workflows in
+which AI agents must access and correlate data distributed across institutional
+lakehouse deployments — a pattern common in computational science, bioinformatics,
+and data-intensive social science research.
+
+# State of the Field
+
+Several open-source projects address parts of the multi-platform data access problem
+for AI agents but differ in scope or design.
+
+**Vendor-specific MCP servers.** Databricks [@databricksmcp2025] and AWS
+[@awsmcp2025] have each released official MCP servers that expose their respective
+platforms to AI agents. These are single-platform solutions: an agent querying both
+requires two separate MCP server configurations, receives platform-native response
+structures from each, and must implement per-platform parsing and governance logic
+in agent code. OpenLakehouse replaces both with one server that returns identical
+canonical types regardless of which platform served the data.
+
+**General-purpose agent frameworks.** LangChain [@langchain2023] and LlamaIndex
+[@llamaindex2023] provide data loaders and SQL integrations. These are not MCP-native,
+are oriented toward document retrieval rather than structured lakehouse access, and do
+not provide platform-independent canonical response schemas or an integrated governance
+layer that operates at the tool-call level.
+
+**Federated SQL engines.** Trino [@trinodb2019] provides unified query access across
+data stores but requires dedicated server infrastructure and is not designed as an AI
+agent tool interface — it has no canonical metadata model, no MCP tooling, and no
+agent-facing governance layer.
+
+OpenLakehouse occupies a distinct position: it is the only open-source software that
+combines MCP-native agent tooling, canonical typed response models, and default-deny
+governance across multiple lakehouse platforms in a single deployable server.
 
 # Features
 
@@ -194,5 +224,11 @@ fine-grained column-level access control with audit logging.
 The authors thank the developers and maintainers of FastMCP, Pydantic, moto, and the
 Model Context Protocol ecosystem for the foundational libraries that made this work
 possible.
+
+# AI Tool Usage
+
+Claude (Anthropic) was used as a coding assistant during software development,
+assisting with code generation and test writing. All research contributions, design
+decisions, architectural choices, and evaluation results are the authors' own.
 
 # References

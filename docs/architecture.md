@@ -161,26 +161,23 @@ No changes to MCP tools, canonical models, policy engine, or agent-facing interf
 
 ## Evaluation Scripts (`evaluation/`)
 
-| Script | Purpose | Output |
+| Script | What it validates | Needs credentials |
 |---|---|---|
-| `complexity_metrics.py` | LOC, public method count, files required to add an adapter | JSON / CSV |
-| `governance_matrix.py` | Allow/deny/filter scenarios, reason codes, adapter-not-called assertion | JSON / CSV |
-| `semantic_consistency.py` | Compares canonical objects from both platforms, surfaces hidden differences | JSON |
-| `performance_probe.py` | Latency per operation per adapter | CSV (adapter, platform, operation, latency_ms, row_count, success) |
+| `experiment_1_metadata_normalization.py` | Databricks + AWS produce identical canonical metadata shapes | Yes |
+| `experiment_2_query_normalization.py` | Both platforms return identical `CanonicalQueryResult` envelope | Yes |
+| `experiment_3_governance_enforcement.py` | Default-deny, reason codes, policy-before-adapter invariant | No |
+| `experiment_4_agent_coupling.py` | Static comparison: native multi-MCP vs. CLM agent coupling | No |
+| `experiment_5_platform_extension.py` | Zero Agent Modification Property via Snowflake stub | No |
+| `complexity_metrics.py` | LOC, public method count, files required to add an adapter | No |
 
-**Run without live credentials:**
+**Run all experiments:**
 ```bash
-python -m evaluation.complexity_metrics
-python -m evaluation.governance_matrix --csv
-python -m evaluation.semantic_consistency
-```
+# With live credentials (all 5 experiments):
+set -a && source .env && set +a
+python -m evaluation.run_all_experiments
 
-**Run with live credentials (performance_probe):**
-```bash
-OPENLAKEHOUSE_CONFIG=config/config.yaml \
-DATABRICKS_PROD_TOKEN=dapi... \
-AWS_ACCESS_KEY_ID=... \
-python -m evaluation.performance_probe --csv
+# Without live credentials (experiments 3–5 only):
+python -m evaluation.run_all_experiments --skip-live
 ```
 
 ---
