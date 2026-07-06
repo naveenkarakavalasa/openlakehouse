@@ -98,11 +98,23 @@ to the standard boto3 credential chain (profile / env vars / instance role).
 
 ## Running
 
+**Linux / macOS:**
+
 ```bash
 OPENLAKEHOUSE_IDENTITY=claude-desktop-analyst \
 OPENLAKEHOUSE_CONFIG=config/config.yaml \
 DATABRICKS_PROD_TOKEN=dapi... \
 AWS_PROFILE=openlakehouse-readonly \
+openlakehouse
+```
+
+**Windows (Command Prompt):**
+
+```cmd
+set OPENLAKEHOUSE_IDENTITY=claude-desktop-analyst
+set OPENLAKEHOUSE_CONFIG=C:\path\to\config\config.yaml
+set DATABRICKS_PROD_TOKEN=dapi...
+set AWS_PROFILE=openlakehouse-readonly
 openlakehouse
 ```
 
@@ -153,9 +165,21 @@ Databricks, AWS Athena, and a Snowflake stub, then compares the
 ```bash
 # Snowflake stub only (no credentials required):
 python experiments/canonical_interface_demo.py
+```
 
-# With Databricks + AWS credentials:
+With live credentials — **Linux / macOS:**
+
+```bash
 set -a && source .env && set +a
+python experiments/canonical_interface_demo.py
+```
+
+With live credentials — **Windows (Command Prompt):**
+
+```cmd
+set DATABRICKS_PROD_TOKEN=dapi...
+set AWS_ACCESS_KEY_ID=...
+set AWS_SECRET_ACCESS_KEY=...
 python experiments/canonical_interface_demo.py
 ```
 

@@ -97,7 +97,7 @@ class SnowflakeAdapter(LakehouseAdapter):
 
 
 def _load_snowflake_stub():
-    with tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False, encoding="utf-8") as f:
         f.write(_SNOWFLAKE_STUB)
         path = f.name
     try:
