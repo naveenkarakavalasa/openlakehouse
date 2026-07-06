@@ -6,14 +6,16 @@ date-released: "2026-07-06"
 license: Apache-2.0
 repository-code: "https://github.com/naveenkarakavalasa/openlakehouse"
 abstract: >
-  OpenLakehouse is an open-source Python MCP server that gives AI agents
-  unified, governed read access to data across heterogeneous lakehouse
-  platforms. It implements the Canonical Lakehouse Model (CLM), a
-  three-layer abstraction (Metadata, Query, Governance) that normalises
-  platform-native responses from Databricks and AWS into consistent
-  canonical types before they reach the agent. A built-in policy engine
-  enforces default-deny role-based access control independently of the
-  underlying platform.
+  OpenLakehouse is an open-source Python reference implementation of the
+  Canonical Lakehouse Model (CLM), an architectural pattern for giving AI
+  agents uniform, governed access to data across heterogeneous lakehouse
+  platforms. The CLM defines three canonical domains — metadata, query
+  results, and authorization decisions — into which any platform's native
+  responses are translated before reaching the agent. Version 1 ships
+  production adapters for Databricks (Unity Catalog + SQL Warehouse) and
+  AWS (Glue Data Catalog + Athena), exposed through a Model Context
+  Protocol (MCP) server. A built-in policy engine enforces default-deny
+  role-based access control before any adapter call.
 authors:
   - family-names: Karakavalasa
     given-names: Naveen

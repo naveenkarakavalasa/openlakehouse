@@ -170,7 +170,7 @@ adapter interface supports extension without affecting existing behavior.
 
 # Testing and Validation
 
-The package includes 89 unit tests requiring no live cloud credentials. AWS tests run
+The package includes 90 unit tests requiring no live cloud credentials. AWS tests run
 against moto [@moto2024], an in-memory Glue/Athena mock; Databricks tests use
 `pytest-mock` to patch `WorkspaceClient` and `databricks.sql.connect`. The suite
 `tests/unit/test_tools.py` verifies the policy-before-adapter invariant: for each
