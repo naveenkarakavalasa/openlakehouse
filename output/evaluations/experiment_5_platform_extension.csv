@@ -1,3 +1,12 @@
-approach,new_files_required,estimated_agent_loc_added,estimated_total_loc_added,agent_code_changes_required,mcp_tool_changes_required,canonical_model_changes_required,zero_agent_modification,property_holds
-A — Native Agent Integration,0,300,300,"High — new tool calls, new response parsers, new auth flow per platform",N/A — agent owns the tools,N/A — no canonical model,False,False
-B — OpenLakehouse CLM Adapter,4,0,179,None — agent uses same 5 MCP tools with same canonical response,None — server/tools.py unchanged,None — core/canonical/* unchanged,True,True
+component,change_type,purpose,touches_agent,touches_mcp_tools,touches_canonical_models
+src/openlakehouse/adapters/snowflake_adapter.py,NEW FILE,Implement LakehouseAdapter ABC for Snowflake,False,False,False
+src/openlakehouse/config/models.py,MINOR EDIT,Add SnowflakeAdapterConfig Pydantic model,False,False,False
+src/openlakehouse/adapters/registry.py,MINOR EDIT,Add elif branch for SnowflakeAdapterConfig,False,False,False
+config/config.yaml,MINOR EDIT,Add snowflake_prod adapter block with connection parameters,False,False,False
+server/tools.py,UNCHANGED,"Five MCP tools — names, parameters, and return types unchanged",False,False,False
+core/canonical/metadata.py,UNCHANGED,"CanonicalCatalog, CanonicalSchema, CanonicalTable, CanonicalTableSchema",False,False,False
+core/canonical/query.py,UNCHANGED,"CanonicalQueryResult, CanonicalQueryColumn, CanonicalPagination, CanonicalExecutionMetadata",False,False,False
+core/canonical/governance.py,UNCHANGED,"CanonicalPolicy, CanonicalAuthorizationDecision, CanonicalReasonCode",False,False,False
+core/canonical/mapper.py,UNCHANGED,All mapper functions reused unchanged by the new adapter,False,False,False
+policy/engine.py,UNCHANGED,PolicyEngine unchanged — CanonicalResourceScope handles new adapter name,False,False,False
+identity/resolver.py,UNCHANGED,Identity resolution unchanged,False,False,False

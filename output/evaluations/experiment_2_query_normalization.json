@@ -2,8 +2,24 @@
   "experiment": "Canonical Query Normalization",
   "status": "completed",
   "skipped_adapters": [],
+  "query_conformance_rate": "100% (2/2 platforms)",
+  "normalization_scope": {
+    "normalized": [
+      "Response envelope structure (columns, rows, pagination, execution)",
+      "Execution metadata (query_id, execution_time_ms, adapter, platform)",
+      "Pagination state (truncated, next_page_token, row_count)",
+      "Column type vocabulary (CanonicalDataType enum)"
+    ],
+    "not_normalized_v1": [
+      "Scalar row value types (Athena returns strings; Databricks returns typed values)"
+    ]
+  },
   "total": 2,
   "passed": 2,
+  "implementation_notes": [
+    "query_id=None: The databricks-sql-connector does not expose the SQL statement ID via the DB-API cursor interface. This is a v1 connector limitation, not a CLM conformance failure. The field is present in the canonical shape; the value is null.",
+    "Row scalar types: Athena returns all values as strings (e.g. \"1\" for SELECT 1). Databricks may return typed values. Scalar type normalization is outside the CLM v1 scope \u2014 the envelope structure (columns, rows, pagination, execution) is fully normalized. This difference is recorded here as an implementation note, not a failure."
+  ],
   "canonical_examples": {
     "databricks": {
       "columns": [
@@ -28,7 +44,7 @@
         "query_id": null,
         "adapter": "databricks_prod",
         "platform": "databricks",
-        "execution_time_ms": 11003.369577927515,
+        "execution_time_ms": 1054.526702966541,
         "native_metadata": {}
       }
     },
@@ -52,10 +68,10 @@
         "row_count": 1
       },
       "execution": {
-        "query_id": "9b03314e-1e7f-4131-9382-0f63141be933",
+        "query_id": "e11db9a0-e6a9-48c5-acb1-feac8b3d409d",
         "adapter": "aws_prod",
         "platform": "aws",
-        "execution_time_ms": 1471.3354860432446,
+        "execution_time_ms": 1403.8800077978522,
         "native_metadata": {}
       }
     }
@@ -75,12 +91,15 @@
       "execution_fields_ok": true,
       "column_count": 1,
       "row_count": 1,
-      "execution_time_ms": 11003.4,
+      "observed_execution_time_ms": 1054.5,
       "query_id": null,
       "truncated": false,
       "next_page_token": null,
-      "success": true,
-      "error": null
+      "query_conformance": true,
+      "error": null,
+      "implementation_notes": [
+        "query_id=None: The databricks-sql-connector does not expose the SQL statement ID via the DB-API cursor interface. This is a v1 connector limitation, not a CLM conformance failure. The field is present in the canonical shape; the value is null."
+      ]
     },
     {
       "platform": "aws",
@@ -96,12 +115,15 @@
       "execution_fields_ok": true,
       "column_count": 1,
       "row_count": 1,
-      "execution_time_ms": 1471.3,
-      "query_id": "9b03314e-1e7f-4131-9382-0f63141be933",
+      "observed_execution_time_ms": 1403.9,
+      "query_id": "e11db9a0-e6a9-48c5-acb1-feac8b3d409d",
       "truncated": false,
       "next_page_token": null,
-      "success": true,
-      "error": null
+      "query_conformance": true,
+      "error": null,
+      "implementation_notes": [
+        "Row scalar types: Athena returns all values as strings (e.g. \"1\" for SELECT 1). Databricks may return typed values. Scalar type normalization is outside the CLM v1 scope \u2014 the envelope structure (columns, rows, pagination, execution) is fully normalized. This difference is recorded here as an implementation note, not a failure."
+      ]
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "experiment": "Platform Extension Effort / Zero Agent Modification Property",
+  "experiment": "Platform Extension Property Validation",
   "status": "completed",
   "existing_adapters": {
     "databricks": {
@@ -13,87 +13,73 @@
       "public_methods": 5
     }
   },
-  "average_adapter_loc": 179,
-  "comparison": [
+  "average_measured_adapter_loc": 179,
+  "components_changed": [
     {
-      "approach": "A \u2014 Native Agent Integration",
-      "description": "Agent directly integrates each platform using platform-specific SDKs/APIs",
-      "new_files_required": 0,
-      "agent_code_changes_required": "High \u2014 new tool calls, new response parsers, new auth flow per platform",
-      "mcp_tool_changes_required": "N/A \u2014 agent owns the tools",
-      "canonical_model_changes_required": "N/A \u2014 no canonical model",
-      "policy_engine_changes_required": "N/A \u2014 no unified policy engine",
-      "response_parser_changes_required": "New parser required for each platform",
-      "new_adapter_class_required": false,
-      "config_registration_required": false,
-      "property_holds": false,
-      "zero_agent_modification": false,
-      "estimated_agent_loc_added": 300,
-      "estimated_total_loc_added": 300,
-      "notes": "Agent must learn platform-specific API, auth, schema, and pagination per platform"
-    },
-    {
-      "approach": "B \u2014 OpenLakehouse CLM Adapter",
-      "description": "New adapter class implementing LakehouseAdapter ABC + config registration",
-      "new_files_required": 4,
-      "agent_code_changes_required": "None \u2014 agent uses same 5 MCP tools with same canonical response",
-      "mcp_tool_changes_required": "None \u2014 server/tools.py unchanged",
-      "canonical_model_changes_required": "None \u2014 core/canonical/* unchanged",
-      "policy_engine_changes_required": "None \u2014 policy/engine.py unchanged",
-      "response_parser_changes_required": "None \u2014 CanonicalQueryResult shape unchanged",
-      "new_adapter_class_required": true,
-      "config_registration_required": true,
-      "property_holds": true,
-      "zero_agent_modification": true,
-      "estimated_agent_loc_added": 0,
-      "estimated_total_loc_added": 179,
-      "notes": "Only 4 files change: new adapter, config model, registry entry, config YAML"
-    }
-  ],
-  "files_required_clm": [
-    {
-      "file": "src/openlakehouse/adapters/snowflake_adapter.py",
-      "purpose": "Implement LakehouseAdapter for Snowflake",
+      "component": "src/openlakehouse/adapters/snowflake_adapter.py",
+      "change_type": "NEW FILE",
+      "purpose": "Implement LakehouseAdapter ABC for Snowflake",
       "touches_agent": false,
       "touches_mcp_tools": false,
-      "touches_canonical_models": false,
-      "new": true
+      "touches_canonical_models": false
     },
     {
-      "file": "src/openlakehouse/config/models.py",
+      "component": "src/openlakehouse/config/models.py",
+      "change_type": "MINOR EDIT",
       "purpose": "Add SnowflakeAdapterConfig Pydantic model",
       "touches_agent": false,
       "touches_mcp_tools": false,
-      "touches_canonical_models": false,
-      "new": false
+      "touches_canonical_models": false
     },
     {
-      "file": "src/openlakehouse/adapters/registry.py",
+      "component": "src/openlakehouse/adapters/registry.py",
+      "change_type": "MINOR EDIT",
       "purpose": "Add elif branch for SnowflakeAdapterConfig",
       "touches_agent": false,
       "touches_mcp_tools": false,
-      "touches_canonical_models": false,
-      "new": false
+      "touches_canonical_models": false
     },
     {
-      "file": "config/config.yaml",
-      "purpose": "Add snowflake_prod adapter block",
+      "component": "config/config.yaml",
+      "change_type": "MINOR EDIT",
+      "purpose": "Add snowflake_prod adapter block with connection parameters",
       "touches_agent": false,
       "touches_mcp_tools": false,
-      "touches_canonical_models": false,
-      "new": false
+      "touches_canonical_models": false
     }
   ],
-  "files_unchanged_clm": [
-    "server/tools.py",
-    "core/canonical/metadata.py",
-    "core/canonical/query.py",
-    "core/canonical/governance.py",
-    "core/canonical/mapper.py",
-    "policy/engine.py",
-    "identity/resolver.py"
+  "components_unchanged": [
+    {
+      "component": "server/tools.py",
+      "description": "Five MCP tools \u2014 names, parameters, and return types unchanged"
+    },
+    {
+      "component": "core/canonical/metadata.py",
+      "description": "CanonicalCatalog, CanonicalSchema, CanonicalTable, CanonicalTableSchema"
+    },
+    {
+      "component": "core/canonical/query.py",
+      "description": "CanonicalQueryResult, CanonicalQueryColumn, CanonicalPagination, CanonicalExecutionMetadata"
+    },
+    {
+      "component": "core/canonical/governance.py",
+      "description": "CanonicalPolicy, CanonicalAuthorizationDecision, CanonicalReasonCode"
+    },
+    {
+      "component": "core/canonical/mapper.py",
+      "description": "All mapper functions reused unchanged by the new adapter"
+    },
+    {
+      "component": "policy/engine.py",
+      "description": "PolicyEngine unchanged \u2014 CanonicalResourceScope handles new adapter name"
+    },
+    {
+      "component": "identity/resolver.py",
+      "description": "Identity resolution unchanged"
+    }
   ],
   "snowflake_stub_verification": {
+    "status": "VERIFIED",
     "conforms_to_lakehouse_adapter": true,
     "canonical_mapper_works": true,
     "server_tools_unchanged": true,
@@ -118,8 +104,9 @@
     }
   },
   "zero_agent_modification_property": {
-    "holds": true,
-    "evidence": "SnowflakeAdapter stub implements LakehouseAdapter; server/tools.py, canonical models, and policy engine unchanged"
+    "status": "VERIFIED",
+    "evidence": "SnowflakeAdapter stub implements LakehouseAdapter; server/tools.py, canonical models, and policy engine verified unchanged."
   },
-  "stub_code": "\"\"\"Stub Snowflake adapter \u2014 proves LakehouseAdapter ABC conformance.\n\nThis class implements all required methods without changing any core module.\nAn AI agent connected to OpenLakehouse would receive the same CanonicalCatalog,\nCanonicalSchema, CanonicalTable, and CanonicalQueryResult shapes it already\nreceives for Databricks and AWS \u2014 no agent-side changes required.\n\"\"\"\nfrom openlakehouse.core.adapter import LakehouseAdapter\nfrom openlakehouse.core.models import (\n    CatalogRef, SchemaRef, TableRef, TableSummary, TableSchema, QueryResult, ColumnSchema, ColumnType\n)\nfrom openlakehouse.core.sql_guard import assert_read_only\n\n\nclass SnowflakeAdapter(LakehouseAdapter):\n    \"\"\"Stub adapter for Snowflake \u2014 demonstrates platform extension pattern.\"\"\"\n\n    def __init__(self, name: str, *, account: str, warehouse: str, token: str) -> None:\n        self.name = name\n        self.platform = \"snowflake\"\n        self._account = account\n        self._warehouse = warehouse\n        self._token = token\n\n    def list_catalogs(self) -> list[CatalogRef]:\n        # Real impl: SHOW DATABASES via snowflake-connector-python\n        return [CatalogRef(adapter=self.name, catalog=\"SNOWFLAKE_SAMPLE_DATA\")]\n\n    def list_schemas(self, catalog: str) -> list[SchemaRef]:\n        # Real impl: SHOW SCHEMAS IN DATABASE <catalog>\n        return [SchemaRef(adapter=self.name, catalog=catalog, schema=\"TPCH_SF1\")]\n\n    def list_tables(self, catalog: str, schema: str) -> list[TableSummary]:\n        # Real impl: SHOW TABLES IN SCHEMA <catalog>.<schema>\n        return [\n            TableSummary(\n                table_ref=TableRef(adapter=self.name, catalog=catalog, schema=schema, table=\"ORDERS\"),\n                table_type=\"TABLE\",\n            )\n        ]\n\n    def describe_table(self, catalog: str, schema: str, table: str) -> TableSchema:\n        # Real impl: DESCRIBE TABLE <catalog>.<schema>.<table>\n        return TableSchema(\n            table_ref=TableRef(adapter=self.name, catalog=catalog, schema=schema, table=table),\n            columns=[\n                ColumnSchema(name=\"O_ORDERKEY\", type=ColumnType.BIGINT, raw_type=\"NUMBER(38,0)\"),\n                ColumnSchema(name=\"O_CUSTKEY\", type=ColumnType.BIGINT, raw_type=\"NUMBER(38,0)\"),\n                ColumnSchema(name=\"O_TOTALPRICE\", type=ColumnType.DECIMAL, raw_type=\"NUMBER(12,2)\"),\n            ],\n        )\n\n    def execute_query(self, sql: str, *, catalog=None, schema=None,\n                      max_rows=1000, page_token=None) -> QueryResult:\n        assert_read_only(sql)\n        # Real impl: snowflake.connector.connect(...).cursor().execute(sql)\n        return QueryResult(\n            columns=[ColumnSchema(name=\"n\", type=ColumnType.INTEGER, raw_type=\"NUMBER\")],\n            rows=[[1]],\n            row_count=1,\n            truncated=False,\n        )\n"
+  "stub_nature": "Architectural validation stub \u2014 not a production Snowflake implementation. Demonstrates the extension pattern; real connector calls require snowflake-connector-python.",
+  "stub_code": "\"\"\"Stub Snowflake adapter \u2014 architectural validation of the LakehouseAdapter extension pattern.\n\nThis class implements all required LakehouseAdapter ABC methods. Adding it to an\nOpenLakehouse deployment would require no changes to agent code, MCP tool names,\ncanonical models, or the policy engine. An agent already connected to OpenLakehouse\nwould automatically discover Snowflake catalogs through list_catalogs, list schemas\nand tables through the existing tools, and receive the same CanonicalQueryResult shape\nvia run_query \u2014 with zero agent-side changes.\n\nThis is NOT a production implementation. Real connector calls (snowflake-connector-python)\nare replaced with hardcoded stubs to validate the architectural contract only.\n\"\"\"\nfrom openlakehouse.core.adapter import LakehouseAdapter\nfrom openlakehouse.core.models import (\n    CatalogRef, SchemaRef, TableRef, TableSummary, TableSchema, QueryResult, ColumnSchema, ColumnType\n)\nfrom openlakehouse.core.sql_guard import assert_read_only\n\n\nclass SnowflakeAdapter(LakehouseAdapter):\n    \"\"\"Architectural validation stub for Snowflake platform extension.\"\"\"\n\n    def __init__(self, name: str, *, account: str, warehouse: str, token: str) -> None:\n        self.name = name\n        self.platform = \"snowflake\"\n        self._account = account\n        self._warehouse = warehouse\n        self._token = token\n\n    def list_catalogs(self) -> list[CatalogRef]:\n        # Production: SHOW DATABASES via snowflake-connector-python\n        return [CatalogRef(adapter=self.name, catalog=\"SNOWFLAKE_SAMPLE_DATA\")]\n\n    def list_schemas(self, catalog: str) -> list[SchemaRef]:\n        # Production: SHOW SCHEMAS IN DATABASE <catalog>\n        return [SchemaRef(adapter=self.name, catalog=catalog, schema=\"TPCH_SF1\")]\n\n    def list_tables(self, catalog: str, schema: str) -> list[TableSummary]:\n        # Production: SHOW TABLES IN SCHEMA <catalog>.<schema>\n        return [\n            TableSummary(\n                table_ref=TableRef(adapter=self.name, catalog=catalog, schema=schema, table=\"ORDERS\"),\n                table_type=\"TABLE\",\n            )\n        ]\n\n    def describe_table(self, catalog: str, schema: str, table: str) -> TableSchema:\n        # Production: DESCRIBE TABLE <catalog>.<schema>.<table>\n        return TableSchema(\n            table_ref=TableRef(adapter=self.name, catalog=catalog, schema=schema, table=table),\n            columns=[\n                ColumnSchema(name=\"O_ORDERKEY\", type=ColumnType.BIGINT, raw_type=\"NUMBER(38,0)\"),\n                ColumnSchema(name=\"O_CUSTKEY\", type=ColumnType.BIGINT, raw_type=\"NUMBER(38,0)\"),\n                ColumnSchema(name=\"O_TOTALPRICE\", type=ColumnType.DECIMAL, raw_type=\"NUMBER(12,2)\"),\n            ],\n        )\n\n    def execute_query(self, sql: str, *, catalog=None, schema=None,\n                      max_rows=1000, page_token=None) -> QueryResult:\n        assert_read_only(sql)\n        # Production: snowflake.connector.connect(...).cursor().execute(sql)\n        return QueryResult(\n            columns=[ColumnSchema(name=\"n\", type=ColumnType.INTEGER, raw_type=\"NUMBER\")],\n            rows=[[1]],\n            row_count=1,\n            truncated=False,\n        )\n"
 }

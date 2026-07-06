@@ -4,42 +4,47 @@
     {
       "id": 1,
       "name": "Canonical Metadata Normalization",
+      "layer": "Metadata Layer",
       "status": "completed",
-      "elapsed_ms": 3156.9,
+      "elapsed_ms": 2288.1,
       "error": null
     },
     {
       "id": 2,
       "name": "Canonical Query Normalization",
+      "layer": "Query Layer",
       "status": "completed",
-      "elapsed_ms": 12627.9,
+      "elapsed_ms": 2607.8,
       "error": null
     },
     {
       "id": 3,
       "name": "Unified Governance Enforcement",
+      "layer": "Governance Layer",
       "status": "completed",
-      "elapsed_ms": 362.3,
+      "elapsed_ms": 359.7,
       "error": null
     },
     {
       "id": 4,
       "name": "Native MCP vs OpenLakehouse Agent Coupling",
+      "layer": "Architecture",
       "status": "completed",
-      "elapsed_ms": 2.9,
+      "elapsed_ms": 3.1,
       "error": null
     },
     {
       "id": 5,
-      "name": "Platform Extension Effort / Zero Agent Modification",
+      "name": "Platform Extension Property Validation",
+      "layer": "Architecture",
       "status": "completed",
-      "elapsed_ms": 30.5,
+      "elapsed_ms": 35.7,
       "error": null
     }
   ],
   "pytest": {
     "status": "passed",
-    "summary": "89 passed, 4 warnings in 3.07s",
+    "summary": "89 passed, 4 warnings in 3.13s",
     "returncode": 0
   },
   "output_files": [
@@ -57,13 +62,17 @@
     "output/evaluations/experiment_4_agent_coupling.md",
     "output/evaluations/experiment_5_platform_extension.csv",
     "output/evaluations/experiment_5_platform_extension.json",
-    "output/evaluations/experiment_5_platform_extension.md"
+    "output/evaluations/experiment_5_platform_extension.md",
+    "output/evaluations/overall_findings.md",
+    "output/evaluations/summary.json",
+    "output/evaluations/summary.md"
   ],
   "limitations": [
     "Databricks query pagination is not resumable in v1 (next_page_token=None for Databricks)",
-    "assert_read_only is a denylist heuristic, not a full SQL parser",
-    "AWS Lake Formation is 'rely-and-surface' \u2014 OpenLakehouse does not proactively introspect LF grants",
-    "SnowflakeAdapter in Experiment 5 is a stub \u2014 not connected to real Snowflake",
-    "Performance measurements include network latency and warehouse cold-start time"
+    "assert_read_only is a denylist/allowlist heuristic, not a full SQL parser",
+    "AWS Lake Formation is rely-and-surface \u2014 OpenLakehouse does not proactively introspect LF grants",
+    "SnowflakeAdapter in Experiment 5 is an architectural validation stub \u2014 not a production implementation",
+    "Execution time measurements include network latency and warehouse cold-start overhead",
+    "Scalar row value type normalization is out of scope for CLM v1"
   ]
 }

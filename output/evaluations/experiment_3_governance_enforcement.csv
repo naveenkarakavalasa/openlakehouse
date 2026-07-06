@@ -1,9 +1,9 @@
-scenario,identity,role,adapter,catalog,schema,table,operation,expected_decision,actual_decision,reason_code,adapter_blocked,success,error
-analyst_allow_samples_nyctaxi,analyst-agent,analyst,databricks_prod,samples,nyctaxi,*,authorize,allow,allow,ALLOWED,N/A,True,
-analyst_deny_samples_tpch,analyst-agent,analyst,databricks_prod,samples,tpch,*,authorize,deny,deny,DENIED_BY_RULE,YES,True,
-analyst_allow_aws_openlakehouse_test,analyst-agent,analyst,aws_prod,AwsDataCatalog,openlakehouse_test,*,authorize,allow,allow,ALLOWED,N/A,True,
-analyst_deny_aws_other_schema,analyst-agent,analyst,aws_prod,AwsDataCatalog,raw_data,*,authorize,deny,deny,DENIED_NO_MATCHING_RULE,YES,True,
-analyst_allow_query,analyst-agent,analyst,databricks_prod,samples,nyctaxi,*,authorize (query),allow,allow,ALLOWED,N/A,True,
-unknown_identity_deny,unknown-bot,none,databricks_prod,samples,nyctaxi,*,authorize,deny,deny,DENIED_NO_ROLE,YES,True,
-admin_allow_all,me,admin,databricks_prod,samples,tpch,lineitem,authorize (query),allow,allow,ALLOWED,N/A,True,
-admin_allow_any_aws,me,admin,aws_prod,AwsDataCatalog,raw_data,logs,authorize,allow,allow,ALLOWED,N/A,True,
+scenario,identity,role,adapter,catalog,schema,table,operation,expected_decision,actual_decision,expected_reason_code,reason_code,adapter_blocked,governance_conformance,error
+analyst_allow_samples_nyctaxi,analyst-agent,analyst,databricks_prod,samples,nyctaxi,*,authorize,allow,allow,ALLOWED,ALLOWED,N/A,True,
+analyst_deny_samples_tpch,analyst-agent,analyst,databricks_prod,samples,tpch,*,authorize,deny,deny,DENIED_BY_RULE,DENIED_BY_RULE,YES,True,
+analyst_allow_aws_openlakehouse_test,analyst-agent,analyst,aws_prod,AwsDataCatalog,openlakehouse_test,*,authorize,allow,allow,ALLOWED,ALLOWED,N/A,True,
+analyst_deny_aws_other_schema,analyst-agent,analyst,aws_prod,AwsDataCatalog,raw_data,*,authorize,deny,deny,DENIED_NO_MATCHING_RULE,DENIED_NO_MATCHING_RULE,YES,True,
+analyst_allow_query,analyst-agent,analyst,databricks_prod,samples,nyctaxi,*,authorize (query),allow,allow,ALLOWED,ALLOWED,N/A,True,
+unknown_identity_deny,unknown-bot,none,databricks_prod,samples,nyctaxi,*,authorize,deny,deny,DENIED_NO_ROLE,DENIED_NO_ROLE,YES,True,
+admin_allow_all,me,admin,databricks_prod,samples,tpch,lineitem,authorize (query),allow,allow,ALLOWED,ALLOWED,N/A,True,
+admin_allow_any_aws,me,admin,aws_prod,AwsDataCatalog,raw_data,logs,authorize,allow,allow,ALLOWED,ALLOWED,N/A,True,

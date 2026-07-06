@@ -5,3 +5,6 @@ __pycache__/
 *.egg-info/
 config/config.yaml
 config/policy.yaml
+config/config.example copy.yaml
+.env
+data/
