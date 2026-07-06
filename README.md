@@ -96,6 +96,41 @@ Requires Python 3.11+. Secrets are never stored in `config.yaml` — Databricks
 PATs are referenced by env var name (`token_env`), and AWS credentials defer
 to the standard boto3 credential chain (profile / env vars / instance role).
 
+## Testing
+
+```bash
+pytest
+```
+
+90 unit tests require no live cloud credentials: the AWS adapter is tested
+against [moto](https://github.com/getmoto/moto) (in-memory Glue/Athena) and
+the Databricks adapter uses `pytest-mock` to patch `WorkspaceClient` and
+`databricks.sql.connect`. `tests/unit/test_tools.py` specifically verifies the
+policy-before-adapter invariant: for each denied scenario, a mock adapter
+asserts none of its methods were called.
+
+## Evaluation Suite
+
+Five experiments in `evaluation/` validate the CLM's architectural properties.
+Experiments 3–5 run without live credentials:
+
+| Experiment | What it validates | Needs credentials |
+| --- | --- | --- |
+| 1 — Metadata Normalization | Databricks + AWS produce identical canonical metadata shapes | Yes |
+| 2 — Query Normalization | Both platforms return identical `CanonicalQueryResult` envelope | Yes |
+| 3 — Governance Enforcement | Default-deny, reason codes, policy-before-adapter invariant | No |
+| 4 — Agent Coupling | Static comparison: native multi-MCP vs. CLM approach | No |
+| 5 — Platform Extension | Zero Agent Modification Property via Snowflake stub | No |
+
+```bash
+# Run all (with live credentials):
+set -a && source .env && set +a
+python -m evaluation.run_all_experiments
+
+# Run without live credentials (experiments 3–5 only):
+python -m evaluation.run_all_experiments --skip-live
+```
+
 ## Running
 
 ### Step 1 — Configure
@@ -170,7 +205,7 @@ Run the MCP Inspector to browse available tools interactively (requires Node.js)
 npx @modelcontextprotocol/inspector openlakehouse
 ```
 
-Or run the canonical interface demo to verify live data access (Snowflake stub runs without credentials):
+Or run the canonical interface demo to verify live data access (Snowflake stub runs without credentials; Databricks and AWS require Steps 1–2 above):
 
 ```bash
 python experiments/canonical_interface_demo.py
@@ -213,36 +248,6 @@ wildcard per segment). Rules use **last-match-wins** evaluation and access is
 filter out unauthorized items; `describe_table` and `run_query` return an
 explicit `PermissionDeniedError` when the named resource is denied.
 
-## Canonical Interface Demo
-
-`experiments/canonical_interface_demo.py` issues the same query against
-Databricks, AWS Athena, and a Snowflake stub, then compares the
-`CanonicalQueryResult` objects side by side, confirming the
-**Zero Agent Modification Property**: adding the Snowflake adapter required
-no changes to MCP tools, canonical models, or the policy engine.
-
-**Snowflake stub — no credentials required:**
-
-```bash
-python experiments/canonical_interface_demo.py
-```
-
-**With live Databricks and AWS credentials** (Steps 1–2 above must be complete):
-
-Linux / macOS:
-```bash
-set -a && source .env && set +a
-python experiments/canonical_interface_demo.py
-```
-
-Windows:
-```cmd
-set DATABRICKS_PROD_TOKEN=dapi...
-set AWS_ACCESS_KEY_ID=...
-set AWS_SECRET_ACCESS_KEY=...
-python experiments/canonical_interface_demo.py
-```
-
 ## Known v1 Limitations
 
 - **Databricks query pagination is not resumable.** The SQL connector does not
@@ -257,41 +262,6 @@ python experiments/canonical_interface_demo.py
   `AccessDeniedException` to `PermissionDeniedError`. LF grants are not
   proactively read or used to filter listings.
 - **No MCP resources in v1** — all operations use tools.
-
-## Testing
-
-```bash
-pytest
-```
-
-90 unit tests require no live cloud credentials: the AWS adapter is tested
-against [moto](https://github.com/getmoto/moto) (in-memory Glue/Athena) and
-the Databricks adapter uses `pytest-mock` to patch `WorkspaceClient` and
-`databricks.sql.connect`. `tests/unit/test_tools.py` specifically verifies the
-policy-before-adapter invariant: for each denied scenario, a mock adapter
-asserts none of its methods were called.
-
-## Evaluation Suite
-
-Five experiments in `evaluation/` validate the CLM's architectural properties.
-Experiments 3–5 run without live credentials:
-
-| Experiment | What it validates | Needs credentials |
-| --- | --- | --- |
-| 1 — Metadata Normalization | Databricks + AWS produce identical canonical metadata shapes | Yes |
-| 2 — Query Normalization | Both platforms return identical `CanonicalQueryResult` envelope | Yes |
-| 3 — Governance Enforcement | Default-deny, reason codes, policy-before-adapter invariant | No |
-| 4 — Agent Coupling | Static comparison: native multi-MCP vs. CLM approach | No |
-| 5 — Platform Extension | Zero Agent Modification Property via Snowflake stub | No |
-
-```bash
-# Run all (with live credentials):
-set -a && source .env && set +a
-python -m evaluation.run_all_experiments
-
-# Run without live credentials (experiments 3–5 only):
-python -m evaluation.run_all_experiments --skip-live
-```
 
 ## Contributing
 
