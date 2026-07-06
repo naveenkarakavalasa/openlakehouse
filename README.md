@@ -77,10 +77,10 @@ every tool calls the policy engine *before* touching an adapter, never after.
 ## Installation
 
 ```bash
-pip install openlakehouse
+pip install git+https://github.com/naveenkarakavalasa/openlakehouse.git
 ```
 
-Or install from source for development:
+Or clone and install in development mode:
 
 ```bash
 git clone https://github.com/naveenkarakavalasa/openlakehouse.git
